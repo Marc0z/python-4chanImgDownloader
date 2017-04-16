@@ -14,7 +14,7 @@ def checkAndMakeDirectory(di):
 
 
 subsite = 'wg'
-directory = '/4chan/' + subsite + '/'
+directory = os.path.abspath(os.path.dirname(sys.argv[0])) + '/4chan/' + subsite + '/'
 img_arr = defaultdict(dict)
 
 r = requests.get('http://a.4cdn.org/' + subsite + '/catalog.json')
@@ -36,12 +36,13 @@ for thread in thread_arr:
         url = 'http://a.4cdn.org/' + subsite + '/thread/' + str(thread) + '.json'
         r_inner = requests.get(url)
         json_d = json.loads(r_inner.content)
-        counter = 0
+        pCount = 0
         for collection in json_d['posts']:
             if 'tim' in collection:
-                img_arr[thread][counter] = str(collection['tim']) + str(collection['ext'])
-                counter += 1
+                img_arr[thread][pCount] = str(collection['tim']) + str(collection['ext'])
+                pCount += 1
         pprint('thread ' + str(tCount) + ' from ' + str(len(thread_arr)) + ' done')
+    # TODO: propper error print
     except Exception:
         pprint(Exception)
 
@@ -62,6 +63,7 @@ for key, thread_content in img_arr.iteritems():
             with open(directory + str(key) + '/' + post_img, 'wb') as out_file:
                 shutil.copyfileobj(response.raw, out_file)
             del response
+        # TODO: propper error print
         except Exception:
             pprint(Exception)
     tDoneCount += 1
