@@ -10,9 +10,10 @@ from threading import Thread
 import requests
 
 shared_img_array = None
-#subsite = 'wg'
 
-subsite = 'sci'
+# 4chan board to check
+subsite = 'wg'
+
 directory = os.path.abspath(os.path.dirname(sys.argv[0])) + '/4chan/{0}/'.format(subsite)
 collecting_end = False
 shared_img_array = defaultdict(dict)
@@ -82,9 +83,9 @@ def checkAndMakeDirectory(di):
         pprint(e)
 
 def ImgDownload():
-    pprint('! downloading img\'s from threads...')
     global shared_img_array
     
+    pprint('! downloading img\'s from threads...')
     while True:
         
         if collecting_end is True and bool(shared_img_array) is False:
