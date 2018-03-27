@@ -26,6 +26,7 @@ def main(argv):
     download.start()
     collect.join()
     download.join()
+
     pass
 
 def collectThreadInfo():
@@ -40,7 +41,7 @@ def collectThreadInfo():
 
     allThreads = extractThreads(json.loads(r.content))
     
-    for thread in allThreads:
+    for iterator, thread in enumerate(allThreads):
         time.sleep(0.4)  # requested by 4chan API, or killed if 2 soon
         url = 'http://a.4cdn.org/{0}/thread/{1}.json'.format(subsite, str(thread))
         
@@ -58,7 +59,7 @@ def collectThreadInfo():
                     shared_img_array[thread] = [str(collection['tim']) + str(collection['ext'])]
                 else:
                     shared_img_array[thread].append(str(collection['tim']) + str(collection['ext']))
-        pprint('+ thread ({2}) collected {0} from {1}'.format(str(len(shared_img_array)), str(len(allThreads)), thread) )
+        pprint('+ thread ({2}) collected {0} from {1}'.format(str(iterator), str(len(allThreads)), thread) )
 
 
     collecting_end = True
